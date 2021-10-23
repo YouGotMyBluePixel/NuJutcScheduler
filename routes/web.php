@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BusRoutesController;
 use Inertia\Inertia;
 
 /*
@@ -27,5 +28,7 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::resource('busroutes', BusRoutesController::class);
 
 require __DIR__.'/auth.php';
