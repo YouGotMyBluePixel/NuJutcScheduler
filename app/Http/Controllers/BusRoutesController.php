@@ -16,7 +16,28 @@ class BusRoutesController extends Controller
     public function getroutes()
     {
         $BusRoutes = BusRoutes::get();
-        return response()->json($BusRoutes);
+        return $BusRoutes;
+    }
+    public function updatebus(Request $request)
+    {
+        $id = $request->get('id');
+        $BusRoute1=$request->get('busroute1');
+        $BusRoute2=$request->get('busroute2');
+        $Description=$request->get('description');
+        $Price=$request->get('price');
+        $Time=$request->get('time');
+
+        return BusRoutes::updateOrCreate(
+            ['id'=>$id],
+            [
+            'id'=>$id,
+            'busroute1' =>$BusRoute1,
+            'busroute2' => $BusRoute2,
+            'description' => $Description,
+            'price' => $Price,
+            'time' => $Time,
+            
+            ]);
     }
   
     /**

@@ -18,7 +18,7 @@ class CreateBusroutesTable extends Migration
             $table->string('busroute1');
             $table->string('busroute2');
             $table->string('description');
-            $table->time("time");
+            $table->dateTime("time");
             $table->decimal('price', 22)->nullable()->default(0.00);
             $table->timestamps();
         });

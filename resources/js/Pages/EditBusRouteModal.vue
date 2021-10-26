@@ -4,7 +4,7 @@
     <div class="modal">
       <header class="modal-header">
         <slot name="header">
-          ADD BUS ROUTES
+          EDIT BUS ROUTES
         </slot>
         <button
           type="button"
@@ -17,35 +17,48 @@
 
       <section class="modal-body">
         <slot name="body">
-           <div class="row">
-            <div class="col-md-6">
-                <form @submit.prevent="submit" >
-                    <div class="form-group">
-                        <label>Bus Route (to):</label>
-                        <input type="text" class="w-full mt-2 mb-6 px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500" placeholder="Where the bus is going." v-model="form.busroute1">
+           <div class="row" >
+            <div class="col-md-6" v-if="busroute">
+               <div class="form-group">
+                        <label>Bus Route (to):
+                        </label>
+
+                        <input type="text" class="w-full mt-2 mb-6 px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500" placeholder="Where the bus is going." v-model="busroute.busroute1" name="busroute1">
                     </div>
                     <div class="form-group">
                         <label>Bus Route (from):</label>
-                        <input type="text" class="w-full mt-2 mb-6 px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500" placeholder="Where the bus will load." v-model="form.busroute2">
+                        <input type="text" class="w-full mt-2 mb-6 px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500" placeholder="Where the bus will load." v-model="busroute.busroute2">
                     </div>
                     <div class="form-group">
                         <label>Description:</label>
-                        <textarea type="text" class="w-full mt-2 mb-6 px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500" rows="3" placeholder="Description for the route" v-model="form.description">
+                        <textarea type="text" class="w-full mt-2 mb-6 px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500" rows="3" placeholder="Description for the route" v-model="busroute.description">
                             </textarea>
                     </div>
                     <div class="form-group">
                         <label>Price($):</label>
-                        <input type="number" class="w-full mt-2 mb-6 px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500" rows="3" placeholder="Fare for the bus ride" v-model="form.price">
+                        <input type="number" class="w-full mt-2 mb-6 px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500" rows="3" placeholder="Fare for the bus ride" v-model="busroute.price" >
                     </div>
                     <div class="form-group">
                         <label>Time:</label>
-                        <input type="datetime-local" class="w-full mt-2 mb-6 px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500" rows="3" placeholder="Code Snippet" v-model="form.time">
+                        <input type="datetime-local" class="w-full mt-2 mb-6 px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500" rows="3" placeholder="Code Snippet" v-model="busroute.time">
                     </div>
-                    <footer class="modal-footer">
+            </div>
+        </div>
+        </slot>
+       </section>
+
+      <footer class="modal-footer">
         <slot name="footer">
         </slot>
-                    <button type="submit" class=" text-green-500 bg-transparent border border-solid border-green-500 hover:bg-green-500 hover:text-white active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded outline-none focus:outline-none mr-2 mb-1 ease-linear transition-all duration-150">Create</button>
-
+         <button
+              v-on:click="
+                $emit('update', busroute.id, busroute)
+              "
+              class="text-green-500 bg-transparent border border-solid border-green-500 hover:bg-green-500 hover:text-white active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              type="button"
+            >
+              Save Changes
+            </button>
         <button
           type="button"
           class="text-green-500 bg-transparent border border-solid border-green-500 hover:bg-green-500 hover:text-white active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
@@ -55,13 +68,6 @@
         </button>
         
       </footer>
-                </form>
-            </div>
-        </div>
-        </slot>
-       </section>
-
-      
     </div>
   </div>
   
@@ -69,49 +75,42 @@
 </template>
 <script>
 
-import { Head } from '@inertiajs/inertia-vue3';
-import { useForm } from "@inertiajs/inertia-vue3";
+
 import axios from 'axios'
+import { useForm } from "@inertiajs/inertia-vue3";
 export default {
-
     props: {
-        busroutes: Object,
+      busroute: {type:Object}
     },
-
-     setup() {
-        const form = useForm({
-            busroute1: null,
-            busroute2: null,
-            description: null,
-            time: null,
-            price: null
-        });
-
-        return { form };
-    },
+  data() {
+    return {
+        // busroute:[],
+        //     busroute1: null,
+        //     busroute2: null,
+        //     description: null,
+        //     time: null,
+        //     price: null
+    }
+  },
+  
     
+       
     methods: {
-      
       close() {
         this.$emit('close');
       },
-       submit() {
-            this.form.post(route("busroutes.store"));
-            location.reload();
-        },
+
+      
     },
     components: {
         
     },
-    
   
 }
 </script>
 <style>
   .modal-backdrop {
-      
-   position: absolute;
-  z-index: 1060;
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
@@ -149,22 +148,13 @@ export default {
     flex-direction: column;
     justify-content: flex-end;
   }
-   .modal-fade-enter,
-  .modal-fade-leave-to {
-    opacity: 0;
-  }
-
-  .modal-fade-enter-active,
-  .modal-fade-leave-active {
-    transition: opacity .4s ease;
-  }
 
   .modal-body {
+      max-height: calc(92vh - 192px);
+    overflow-y: auto;
     position: relative;
     padding: 20px 10px;
-    max-height: calc(118vh - 228px);
-    overflow-y: auto;
-
+    
   }
 
   .btn-close {
