@@ -20,3 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::get('/getroutes', [BusRoutesController::class, 'getroutes']);
 Route::post('/updatebus', [BusRoutesController::class, 'updatebus']);
+Route::post('/deletebus', [BusRoutesController::class, 'destroy']);
+

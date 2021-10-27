@@ -1,6 +1,6 @@
 <template>
     <Head title="Dashboard" />
-
+<notifications group="error" />
     <BreezeAuthenticatedLayout>
         <header class="bg-white shadow">
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -23,6 +23,7 @@
     v-show="isAddBusRouteModalVisible"
     @close="closeModal"
     />
+    
       <div class="px-4 py-6 sm:px-0">
           
         <table class="table table-hover table-bordered" id="example">
@@ -32,6 +33,7 @@
         <th>Bus Route (from)</th>
         <th>Bus Route (to)</th>
         <th>Description</th>
+         <th>Date</th>
         <th>Time</th>
         <th>Price($)</th>
         <th>Actions</th>
@@ -44,15 +46,36 @@
          <td>{{busroute.busroute1}}</td>
         <td>{{busroute.busroute2}}</td>
         <td>{{busroute.description}}</td>
+        <td>{{busroute.date}}</td>
         <td>{{busroute.time}}</td>
         <td>{{busroute.price}}</td>
-        <td> <button
+        <td> 
+          <button
       type="button"
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+   class="w-14 h-auto  px-4 py-3 editPointBox rounded hover:bg-white font-semibold transition duration-200 each-in-out"
       :busroute="busrouteData"
       @click="toggleEditModal(busroute)"
     >
-      Edit
+    
+      <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke=""
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="feather feather-edit"
+                          >
+                            <path
+                              d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                            ></path>
+                            <path
+                              d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                            ></path>
+                          </svg>
     </button>
 
    <edit-bus-route-modal
@@ -62,14 +85,35 @@
       @update="update"
      
     />
+       <delete-bus-route-modal
+     v-show="isDeleteModalVisible"
+      @close="closeModal"
+      :busroute="busrouteData"
+      @deleteBusRoute="deleteBusRoute"
+    />
     <button
       type="button"
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      class="w-14 h-auto  px-4 py-3 deletePointBox rounded  hover:bg-white font-semibold transition duration-200 each-in-out"
       :busroute="busrouteData"
       @click="toggleDeleteModal(busroute)"
     >
-      Delete
+       <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke=""
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="feather feather-x"
+                          >
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                          </svg>
     </button>
+ 
 
    </td>
       </tr>
@@ -78,12 +122,16 @@
       </div>
       <!-- /End replace -->
     </div>
+    
   </main>
 
     </BreezeAuthenticatedLayout>
+    
 </template>
 
 <script>
+
+import { notify } from "@kyvg/vue3-notification";
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue'
 import { Head } from '@inertiajs/inertia-vue3';
 import { useForm } from "@inertiajs/inertia-vue3";
@@ -92,7 +140,19 @@ import AddBusRouteModal from './AddBusRouteModal.vue'
 import EditBusRouteModal from './EditBusRouteModal.vue'
 import DeleteBusRouteModal from './DeleteBusRouteModal.vue'
 
+
+
+
 export default {
+   data() {
+          
+            return {
+              busroutes:[],
+               isAddBusRouteModalVisible: false,
+               isEditBusRouteModalVisible: false,
+               isDeleteModalVisible: false,
+            }
+        },
     components: {
         BreezeAuthenticatedLayout,
         Head,
@@ -109,14 +169,24 @@ export default {
         this.isEditBusRouteModalVisible = false;
         this.isDeleteModalVisible = false;
       },
+      async GetAllRoutes(){
+         await axios
+        .get(
+          'api/getroutes'
+        )
+        .then((response) => (this.busroutes = response.data))
+        .catch((error) => {
+          console.log(error)
+        })
+      },
         toggleEditModal:function(busroute){
         this.busrouteData = busroute
         this.isEditBusRouteModalVisible = !this.isEditBusRouteModalVisible
       },
-    //   toggleDeleteModal:function(busroute){
-    //     this.busrouteData = busroute
-    //     this.isDeleteModalVisibile = !this.isDeleteModalVisibile
-    //   },
+      toggleDeleteModal:function(busroute){
+        this.busrouteData = busroute
+        this.isDeleteModalVisible = !this.isDeleteModalVisible
+      },
       async update(id, updatedBusRoute) {
       this.isEditBusRouteModalVisible = !this.isEditBusRouteModalVisible
       //console.log(images)
@@ -128,6 +198,7 @@ export default {
         form.append('description', updatedBusRoute.description)
         form.append('price', updatedBusRoute.price)
         form.append('time', updatedBusRoute.time)
+         form.append('date', updatedBusRoute.date)
         await axios.post( `api/updatebus/`,
           form
         )
@@ -142,33 +213,46 @@ export default {
 
       // return
     },
+     async deleteBusRoute(id) {
+     this.$inertia.delete(route("busroutes.destroy", id));
+     location.reload();
     },
-    data() {
-          
-            return {
-              busroutes:[],
-               isAddBusRouteModalVisible: false,
-               isEditBusRouteModalVisible: false,
-               isDeleteBusRouteVisible: false,
-            }
-        },
+    },
+   
     
-    mounted(){
+    async mounted(){
     //API Call
-    axios
-    .get("api/getroutes")
-    .then((res)=>
-    {
-      this.busroutes = res.data;
-     setTimeout(function(){ $("#example").DataTable(
-       
-     ); }, 10);
-      
+  await this.GetAllRoutes()
+
+  $(document).ready(function() {
+      $('#example').DataTable({
+        stripeClasses: ['strip1', 'strip2', 'strip3'],
+      })
     })
   },
 }
 </script>
 <style>
+
+.editPointBox {
+  border: 1px solid rgb(74, 159, 228);
+  background: rgb(74, 159, 228);
+  stroke: white;
+  margin: 5px;
+}
+
+.editPointBox:hover {
+  stroke: rgb(74, 159, 228);
+}
+.deletePointBox {
+  border: 1px solid red;
+  background: red;
+  stroke: white;
+  margin: 5px;
+}
+.deletePointBox:hover {
+  stroke: red;
+}
 
 
 </style>

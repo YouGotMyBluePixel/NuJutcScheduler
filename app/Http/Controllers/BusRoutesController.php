@@ -25,6 +25,7 @@ class BusRoutesController extends Controller
         $BusRoute2=$request->get('busroute2');
         $Description=$request->get('description');
         $Price=$request->get('price');
+        $date=$request->get('date');
         $Time=$request->get('time');
 
         return BusRoutes::updateOrCreate(
@@ -35,10 +36,12 @@ class BusRoutesController extends Controller
             'busroute2' => $BusRoute2,
             'description' => $Description,
             'price' => $Price,
+            'date' => $date,
             'time' => $Time,
             
             ]);
     }
+    
   
     /**
      * Show the form for creating a new resource.
@@ -52,6 +55,8 @@ class BusRoutesController extends Controller
             'busroute2' => ['required'],
             'description' => ['required'],
             'price' => ['required'],
+            'time' => ['required'],
+            'date' => ['required'],
         ])->validate();
   
         BusRoutes::create($request->all());
@@ -78,12 +83,12 @@ class BusRoutesController extends Controller
      *
      * @return Response
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        if ($request->has('id')) {
-            BusRoutes::find($request->input('id'))->delete();
-            return redirect()->back();
-        }
+        $BusRoute = BusRoutes::findOrFail($id);
+        $BusRoute->delete();
+
+        return response()->json('Bus Route deleted!');
     }
   
 }
