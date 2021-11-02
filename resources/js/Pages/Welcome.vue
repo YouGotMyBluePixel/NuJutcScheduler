@@ -41,6 +41,9 @@
                         <li class="text-gray-800 hover:text-gray-900 cursor-pointer lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
                             <a href="javascript: void(0)">Contact</a>
                         </li>
+                        <li class="text-gray-800 hover:text-gray-900 cursor-pointer lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
+                            <a href="javascript: void(0)">Top Up Card</a>
+                        </li>
                     </ul>
                 </div>
             </div>
