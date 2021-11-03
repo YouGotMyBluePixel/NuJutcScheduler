@@ -34,8 +34,10 @@
                             </textarea>
                     </div>
                     <div class="form-group">
+                       
                         <label>Price($):</label>
-                        <input type="number" min="1" class="w-full mt-2 mb-6 px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500" rows="3" placeholder="Fare for the bus ride" v-model="form.price" required>
+                        <input type="number" min="100" class="w-full mt-2 mb-6 px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500" rows="3" placeholder="Minimum $100" v-model="form.price" required>
+                        
                     </div>
                     <div class="form-group">
                         <label>Date:</label>
