@@ -29,6 +29,15 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/topup', function () {
+    return Inertia::render('TopUp');
+})->name('TopUp');
+
+Route::get('/contact', function () {
+    return Inertia::render('Contact');
+})->name('contact');
+
+
 Route::resource('busroutes', BusRoutesController::class);
 
 require __DIR__.'/auth.php';

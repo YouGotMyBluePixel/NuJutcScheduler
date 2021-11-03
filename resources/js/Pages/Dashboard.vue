@@ -83,7 +83,7 @@
         <th>DESCRIPTION</th>
          <th>DATE</th>
         <th>TIME</th>
-        <th>PRICE($)</th>
+        <th>PRICE($JMD)</th>
         <th>ACTIONS</th>
       
       </tr>
