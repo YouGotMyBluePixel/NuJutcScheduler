@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BusRoutesController;
+use App\Http\Controllers\SmartCardController;
 use Inertia\Inertia;
 
 /*
@@ -37,6 +38,11 @@ Route::get('/contact', function () {
     return Inertia::render('Contact');
 })->name('contact');
 
+Route::get('/smartcardtopup', function () {
+    return Inertia::render('SmartCardTopUp');
+})->name('smartcard');
+
+Route::resource('/smartcard', SmartCardController::class);
 
 Route::resource('busroutes', BusRoutesController::class);
 
