@@ -82,7 +82,7 @@
         <th>BUS ROUTE (to)</th>
         <th>DESCRIPTION</th>
          <th>DATE</th>
-        <th>TIME</th>
+        <th>DEPART</th>
         <th>PRICE($JMD)</th>
         <th>ACTIONS</th>
       

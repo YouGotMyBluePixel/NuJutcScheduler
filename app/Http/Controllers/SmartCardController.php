@@ -16,11 +16,11 @@ class SmartCardController extends Controller
         $users = SmartCard::where('cardnumber', '=', $request->input('cardnumber'))->first();
         if ($users === null) {
             
-            return response()->json('Verification Failed, Check Card Number');
+            return response()->json('Verification Failed, Check Inputs');
         } else {
           // User exists
           
-          return redirect()->route('smartcard')->with('success', 'Logged in!');;
+          return redirect()->route('smartcard')->with('message', 'Logged in!');;
         }
     }
 }
