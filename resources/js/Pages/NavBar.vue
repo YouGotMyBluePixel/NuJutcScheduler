@@ -28,17 +28,12 @@
                     </div>
                     <ul class="flex text-3xl md:text-base items-center py-10 md:flex flex-col md:flex-row justify-center fixed md:relative top-0 bottom-0 left-0 right-0 bg-white md:bg-transparent z-20">
                         <li class="text-gray-800 hover:text-gray-900 cursor-pointer lg:text-lg pt-10 md:pt-0">
-                            <a href="javascript: void(0)">Feature</a>
+                            <a href="/">Home</a>
                         </li>
-                        <li class="text-gray-800 hover:text-gray-900 cursor-pointer lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
-                            <a href="javascript: void(0)">Marketplace</a>
-                        </li>
-                        <li class="text-gray-800 hover:text-gray-900 cursor-pointer lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
-                            <a href="javascript: void(0)">Company</a>
-                        </li>
-                        <li class="text-gray-800 hover:text-gray-900 cursor-pointer lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
-                            <a href="javascript: void(0)">Features</a>
-                        </li>
+                       
+                        <Link :href="route('Features')" class="text-gray-800 hover:text-gray-900 cursor-pointer lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
+                            Features
+                        </Link>
                        <Link :href="route('contact')" class="text-gray-800 hover:text-gray-900 cursor-pointer lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
                   Contact
                    </Link>

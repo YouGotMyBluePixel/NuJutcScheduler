@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BusRoutesController;
+use App\Http\Controllers\SmartCardController;
 use Inertia\Inertia;
 
 /*
@@ -21,7 +22,7 @@ Route::get('/', function () {
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+    'phpVersion' => PHP_VERSION,
     ]);
 });
 
@@ -33,10 +34,19 @@ Route::get('/topup', function () {
     return Inertia::render('TopUp');
 })->name('TopUp');
 
+Route::get('/features', function () {
+    return Inertia::render('Features');
+})->name('Features');
+
 Route::get('/contact', function () {
     return Inertia::render('Contact');
 })->name('contact');
 
+Route::get('/smartcardtopup', function () {
+    return Inertia::render('SmartCardTopUp');
+})->name('smartcard');
+
+Route::resource('/smartcard', SmartCardController::class);
 
 Route::resource('busroutes', BusRoutesController::class);
 
