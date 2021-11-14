@@ -1,6 +1,7 @@
 {
     "private": true,
     "scripts": {
+        "start": "yarn install",
         "postinstall": "npm run prod",
         "dev": "npm run development",
         "development": "mix",
