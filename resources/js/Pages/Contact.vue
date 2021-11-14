@@ -1,12 +1,11 @@
 <template lang="">
     <div>
-        <!-- a lot of the lines are just svg text, actual html is simple 
-A sample contact us page form written with tailwind css
-Illustration from undraw.co by the amazing Katerina Limpitsouni
--->
+     
+
+ <NavBar/>
 <body class="bg-white text-gray-100 px-8 py-12">
       <div class="text-center w-full">
-       <NavBar/>
+      
       </div>
       <div  
         class="max-w-screen-xl mt-24 px-8 grid gap-8 grid-cols-1 md:grid-cols-2 md:px-12 lg:px-16 xl:px-32 py-16 mx-auto bg-gray-100 text-gray-900 rounded-lg shadow-lg">
@@ -520,40 +519,82 @@ Illustration from undraw.co by the amazing Katerina Limpitsouni
           </div>
         </div>
         <div class="">
-          <div>
-            <span class="uppercase text-sm text-gray-600 font-bold">Full Name</span>
-            <input class="w-full bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
-              type="text" placeholder="">
+        <form @submit.prevent="sendEmail">
+          <span class="uppercase text-sm text-gray-600 font-bold">Full Name</span>
+          <input 
+          class="w-full bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+            type="text" 
+            v-model="name"
+            name="name"
+            placeholder="Your Name"
+          >
+          <div class="mt-8">
+          <span class="uppercase text-sm text-gray-600 font-bold">Email</span>
+          <input 
+          class="w-full bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+            type="email" 
+            v-model="email"
+            name="email"
+            placeholder="Your Email"
+            >
+            </div>
+            <div class="mt-8">
+          <span class="uppercase text-sm text-gray-600 font-bold">Message</span>
+          <textarea 
+          class="w-full h-32 bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+            name="message"
+            v-model="message"
+            cols="30" rows="5"
+            placeholder="Message">
+          </textarea>
           </div>
           <div class="mt-8">
-            <span class="uppercase text-sm text-gray-600 font-bold">Email</span>
-            <input class="w-full bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
-              type="text">
-          </div>
-          <div class="mt-8">
-            <span class="uppercase text-sm text-gray-600 font-bold">Message</span>
-            <textarea
-              class="w-full h-32 bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"></textarea>
-          </div>
-          <div class="mt-8">
-            <button
-              class="uppercase text-sm font-bold tracking-wide bg-indigo-500 text-gray-100 p-3 rounded-lg w-full focus:outline-none focus:shadow-outline">
-              Send Message
+          
+          <button type="submit" class="uppercase text-sm font-bold tracking-wide bg-indigo-500 text-gray-100 p-3 rounded-lg w-full focus:outline-none focus:shadow-outline">
+            Send
             </button>
-          </div>
-        </div>
+            </div>
+        </form>
+      </div>
       </div>
     </body>
     </div>
 </template>
 <script>
 import { Head, Link } from '@inertiajs/inertia-vue3';
-import NavBar from './NavBar.vue'
+import NavBar from './NavBar.vue';
+import emailjs from 'emailjs-com';
 export default {
     components: {
         Link,
         NavBar,
+    },
+    data() {
+    return {
+      name: '',
+      email: '',
+      message: ''
     }
+  },
+  methods: {
+    sendEmail(e) {
+      try {
+        emailjs.sendForm('service_hm9846i', 'template_966pj6i', e.target,
+        'user_60mCvlK5Inike9MAMGvog', {
+          name: this.name,
+          email: this.email,
+          message: this.message
+        })
+
+      } catch(error) {
+          console.log({error})
+      }
+      // Reset form field
+      this.name = ''
+      this.email = ''
+      this.message = ''
+    },
+  }
 }
 </script>
 <style lang="">

@@ -1,5 +1,6 @@
 <template lang="">
     <div>
+        
         <NavBar/>
         <div class="min-w-screen min-h-screen bg-gray-200 flex items-center justify-center px-5 pb-10 pt-16">
     <div class="w-full mx-auto rounded-lg bg-white shadow-lg p-5 text-gray-700" style="max-width: 600px">
@@ -8,6 +9,7 @@
                 <i class="mdi mdi-credit-card-outline text-3xl"></i>
             </div>
         </div>
+          <form @submit.prevent="sendEmail">
         <div class="mb-10">
             <h1 class="text-center font-bold text-xl uppercase">Secure payment info</h1>
         </div>
@@ -28,13 +30,13 @@
         <div class="mb-3">
             <label class="font-bold text-sm mb-2 ml-1">Email</label>
             <div>
-                <input class="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" type="text"/>
+                <input class="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" v-model="email" name="email" type="text"/>
             </div>
         </div>
         <div class="mb-3">
             <label class="font-bold text-sm mb-2 ml-1">Name on card</label>
             <div>
-                <input class="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="John Smith" type="text"/>
+                <input class="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="John Smith" v-model="name" name="name" type="text"/>
             </div>
         </div>
         <div class="mb-3">
@@ -81,12 +83,18 @@
         <div class="mb-10">
             <label class="font-bold text-sm mb-2 ml-1">Security code</label>
             <div>
-                <input class="w-32 px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="000" type="text"/>
+                <input class="w-32 px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="000" v-model="securitycode" name="securitycode" type="text"/>
+            </div>
+             <label class="font-bold text-sm mb-8 ml-1">Top up Amount(JMD) </label>
+            <div>
+                <input class="w-32 px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="100" name="amount" v-model="amount"  min="100" type="number"/>
             </div>
         </div>
         <div>
-            <button class="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold"><i class="mdi mdi-lock-outline mr-1"></i> PAY NOW</button>
+            <button 
+            class="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold"><i class="mdi mdi-lock-outline mr-1"></i> PAY NOW</button>
         </div>
+        </form>
     </div>
 </div>
 
@@ -98,6 +106,8 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 import { useForm } from "@inertiajs/inertia-vue3";
 import Cleave from 'vue-cleave-component';
 import NavBar from './NavBar.vue'
+import emailjs from 'emailjs-com';
+import FlashMessage from '@smartweb/vue-flash-message';
 export default {
     components: {
         NavBar,
@@ -105,13 +115,39 @@ export default {
     },
     data() {
             return {
-                cardNumber: null,
+                name: '',
+                 email: '',
+                  amount: '',
+                cardNumber: '',
                 options: {
                     creditCard: true,
                     delimiter: '-',
                 }
+            
             }
         },
+  methods: {
+    sendEmail(e) {
+      try {
+        emailjs.sendForm('service_hm9846i', 'template_3pomq0e', e.target,
+        'user_60mCvlK5Inike9MAMGvog', {
+          name: this.name,
+          email: this.email,
+          amount: this.amount,
+          cardNumber: this.cardNumber
+        })
+
+      } catch(error) {
+          console.log({error})
+      }
+      // Reset form field
+      this.name = ''
+      this.email = ''
+      this.amount = ''
+      this.cardNumber = ''
+      
+    },
+  },
 }
 </script>
 <style>@import url(https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.min.css);</style>
