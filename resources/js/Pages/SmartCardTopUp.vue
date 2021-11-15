@@ -30,26 +30,26 @@
         <div class="mb-3">
             <label class="font-bold text-sm mb-2 ml-1">Email</label>
             <div>
-                <input class="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" v-model="email" name="email" type="text"/>
+                <input class="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" v-model="email" name="email" type="text" required/>
             </div>
         </div>
         <div class="mb-3">
             <label class="font-bold text-sm mb-2 ml-1">Name on card</label>
             <div>
-                <input class="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="John Smith" v-model="name" name="name" type="text"/>
+                <input class="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="John Smith" v-model="name" name="name" type="text" required/>
             </div>
         </div>
         <div class="mb-3">
             <label class="font-bold text-sm mb-2 ml-1">Card number</label>
             <div>
-                <cleave :options="options" v-model="cardNumber" name="card" class="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="0000-0000-0000-0000" type="text"/>
+                <cleave :options="options" v-model="cardNumber" name="card" class="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="0000-0000-0000-0000" type="text" required/>
             </div>
         </div>
         <div class="mb-3 -mx-2 flex items-end">
             <div class="px-2 w-1/2">
                 <label class="font-bold text-sm mb-2 ml-1">Expiration date</label>
                 <div>
-                    <select class="form-select w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer">
+                    <select class="form-select w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer" required>
                         <option value="01">01 - January</option>
                         <option value="02">02 - February</option>
                         <option value="03">03 - March</option>
@@ -66,7 +66,7 @@
                 </div>
             </div>
             <div class="px-2 w-1/2">
-                <select class="form-select w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer">
+                <select class="form-select w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer" required>
                     <option value="2020">2020</option>
                     <option value="2021">2021</option>
                     <option value="2022">2022</option>
@@ -83,11 +83,11 @@
         <div class="mb-10">
             <label class="font-bold text-sm mb-2 ml-1">Security code</label>
             <div>
-                <input class="w-32 px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="000" v-model="securitycode" name="securitycode" type="text"/>
+                <input class="w-32 px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="000" v-model="securitycode" name="securitycode" type="text" required/>
             </div>
              <label class="font-bold text-sm mb-8 ml-1">Top up Amount(JMD) </label>
             <div>
-                <input class="w-32 px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="100" name="amount" v-model="amount"  min="100" type="number"/>
+                <input class="w-32 px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="100" name="amount" v-model="amount"  min="100" type="number" required/>
             </div>
         </div>
         <div>
@@ -118,6 +118,8 @@ export default {
                 name: '',
                  email: '',
                   amount: '',
+                  securitycode: '',
+                  
                 cardNumber: '',
                 options: {
                     creditCard: true,
@@ -145,6 +147,7 @@ export default {
       this.email = ''
       this.amount = ''
       this.cardNumber = ''
+      this.securitycode = ''
       
     },
   },
