@@ -1,6 +1,6 @@
 <template lang="">
     <div>
-        
+        <notifications />
         <NavBar/>
         <div class="min-w-screen min-h-screen bg-gray-200 flex items-center justify-center px-5 pb-10 pt-16">
     <div class="w-full mx-auto rounded-lg bg-white shadow-lg p-5 text-gray-700" style="max-width: 600px">
@@ -42,7 +42,7 @@
         <div class="mb-3">
             <label class="font-bold text-sm mb-2 ml-1">Card number</label>
             <div>
-                <cleave :options="options" v-model="cardNumber" name="card" class="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="0000-0000-0000-0000" type="text" required/>
+                <input :options="options" v-model="cardNumber" name="card" pattern='.{16}' class="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"  type="text" required/>
             </div>
         </div>
         <div class="mb-3 -mx-2 flex items-end">
@@ -103,6 +103,7 @@
 </template>
 <script>
 import { Head, Link } from '@inertiajs/inertia-vue3';
+import { notify } from "@kyvg/vue3-notification";
 import { useForm } from "@inertiajs/inertia-vue3";
 import Cleave from 'vue-cleave-component';
 import NavBar from './NavBar.vue'
@@ -138,10 +139,16 @@ export default {
           amount: this.amount,
           cardNumber: this.cardNumber
         })
+  
+
 
       } catch(error) {
           console.log({error})
       }
+      this.$notify({
+  title: "Important message",
+  text: "Hello user!",
+});
       // Reset form field
       this.name = ''
       this.email = ''
